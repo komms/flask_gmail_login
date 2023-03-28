@@ -18,7 +18,6 @@ def create_app(test_config=None):
     # db
     db.init_app(app)
     init_db_table(app)
-    print(query_all(app))
 
     # oauth
     oauth.init_app(app)
@@ -27,8 +26,11 @@ def create_app(test_config=None):
     @app.route('/')
     def homepage():
         if session.get('user'):
-            user = session.get('user')['email']
-            return f'Hello, you are logged in as {user}'
+            email = session.get('user')['email']
+            name = session.get('user')['name']
+            # adding a dummy user for testing
+            add_user(app, "12345", name, email)
+            return f'Hello, you are logged in as {email}'
         else:
             return 'No one is logged in'
 
